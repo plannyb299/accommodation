@@ -1,7 +1,6 @@
 package com.plannyb.accomodation.user.service;
 
 import com.plannyb.accomodation.dto.request.HouseRequest;
-import com.plannyb.accomodation.dto.response.House;
 import com.plannyb.accomodation.dto.response.HouseResponse;
 import com.plannyb.accomodation.entity.House;
 import com.plannyb.accomodation.user.model.hostmodel.AllHomesList;
@@ -11,7 +10,6 @@ import com.plannyb.accomodation.user.processor.HouseProcessor;
 import com.plannyb.accomodation.user.repository.HostRepository;
 import com.plannyb.accomodation.utils.Helpers;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -26,13 +24,13 @@ public class HostServiceImpl implements HostService {
 
     @Override
     public HouseResponse findHomeDtoById(Long id) throws Exception {
-        House House;
+        House house;
         try {
-            House = hostRepository.findById(id).get();
+            house = hostRepository.findById(id).get();
         } catch (NoSuchElementException nsee) {
             throw new Exception("Report not found", nsee.getCause());
         }
-        return HouseProcessor.convertToDto(House);
+        return HouseProcessor.convertToDto(house);
     }
 
     @Override
@@ -66,15 +64,15 @@ public class HostServiceImpl implements HostService {
     }
 
     @Override
-    public HousePostDto save(HousePostDto HousePostDto) {
-        House House = HouseConverter.convertPostDtoToHome(HousePostDto);
+    public HouseResponse saveUpdate(HouseRequest housePostDto) {
+        House house = HouseProcessor.convert(housePostDto);
 
-        Optional<House> tempHome = hostRepository.findByAddress(HousePostDto.getAddress());
-        House.setId(tempHome.get().getId());
+        Optional<House> tempHome = hostRepository.findByAddress(housePostDto.getLocation().getAddress());
+        house.setId(tempHome.get().getId());
 
-        House = hostRepository.save(House);
+        House house1= hostRepository.save(house);
 
-        return HouseConverter.convertToPostDto(House);
+        return houseProcessor.convertToDto(house1);
     }
 
     @Override
@@ -83,10 +81,10 @@ public class HostServiceImpl implements HostService {
     }
 
     @Override
-    public List<House> findAll() {
+    public List<HouseResponse> findAll() {
         return hostRepository.findAll()
                 .stream()
-                .map(HouseConverter::convertToDto)
+                .map(HouseProcessor::convertToDto)
                 .collect(Collectors.toList());
     }
 
@@ -94,9 +92,9 @@ public class HostServiceImpl implements HostService {
     public AllHomesList findAllUsingFilters(int people, double latitude, double longitude, Date bookDate, Date leaveDate) {
         AllHomesList allHomesList = new AllHomesList();
 
-        List<House> tempListWithAllHomes = hostRepository.findAll()
+        List<HouseResponse> tempListWithAllHomes = hostRepository.findAll()
                 .stream()
-                .map(HouseConverter::convertToDto)
+                .map(HouseProcessor::convertToDto)
                 .collect(Collectors.toList());
 
         //filter homes by max people

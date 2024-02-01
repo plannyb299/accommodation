@@ -42,6 +42,8 @@ public interface HostService {
 //    HouseResponse save(HouseResponse HouseResponse);
     HouseResponse save(HouseRequest HousePostDto);
 
+    HouseResponse saveUpdate(HouseRequest HousePostDto);
+
     void deleteById(Long id);
 
     Reviews getHomeReviews(Long id) throws Exception;
