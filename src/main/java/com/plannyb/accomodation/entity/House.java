@@ -14,6 +14,10 @@ import java.util.List;
 @Transactional
 public class House extends AbstractEntity{
 
+
+    @Version
+    private Long version;
+
     @Column(name = "street")
     private String street;
 

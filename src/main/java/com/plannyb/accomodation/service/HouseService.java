@@ -25,36 +25,38 @@ public class HouseService {
 //    private final ImageRepository imageRepository;
 //    private final LocationRepository locationRepository;
 //    private final CategoryRepository categoryRepository;
-//    public List<HouseResponse> getAllHouses() {
-//
-//        List<HouseResponse> responseList = new ArrayList<>();
-//
-//        List<House> houseList= houseRepository.findAll();
-//
-//        if(houseList != null){
-//            for(House house : houseList){
-//                HouseResponse houseResponse = new HouseResponse();
-//                BeanUtils.copyProperties(house,houseResponse);
-//
-//                responseList.add(houseResponse);
-//            }
-//        }
-//
-//        return responseList;
-//    }
-//
-//    public HouseResponse getHouseById(Long id) {
-//
-//        HouseResponse response = new HouseResponse();
-//        House house =  houseRepository.findById(id).orElse(null);
-//
-//        if(house != null) {
-//            BeanUtils.copyProperties(house, response);
-//            return response;
-//        }else {
-//            return null;
-//        }
-//    }
+
+
+    public List<HouseResponse> getAllHouses() {
+
+        List<HouseResponse> responseList = new ArrayList<>();
+
+        List<House> houseList= houseRepository.findAll();
+
+        if(houseList != null){
+            for(House house : houseList){
+                HouseResponse houseResponse = new HouseResponse();
+                BeanUtils.copyProperties(house,houseResponse);
+
+                responseList.add(houseResponse);
+            }
+        }
+
+        return responseList;
+    }
+
+    public HouseResponse getHouseById(String id) {
+
+        HouseResponse response = new HouseResponse();
+        House house =  houseRepository.findById(id).orElse(null);
+
+        if(house != null) {
+            BeanUtils.copyProperties(house, response);
+            return response;
+        }else {
+            return null;
+        }
+    }
 
     public House saveHouse(HouseRequest request) {
 
@@ -122,32 +124,32 @@ public class HouseService {
 
     }
 
-//    public HouseResponse updateHouse(Long id, HouseRequest updatedHouse) {
-//
-//        House existingHouse = houseRepository.findById(id).orElse(null);
-//        HouseResponse response = new HouseResponse();
-//
-//        if (existingHouse != null) {
-//            existingHouse.setNeighbourhood(updatedHouse.getNeighbourhood());
-//            existingHouse.setStreet(updatedHouse.getStreet());
-//            existingHouse.setRooms(updatedHouse.getRooms());
-//            existingHouse.setBedrooms(updatedHouse.getBedrooms());
-//            existingHouse.setBathrooms(updatedHouse.getBathrooms());
-//            existingHouse.setShortAddress(updatedHouse.getShortAddress());
-//            existingHouse.setPrice(updatedHouse.getPrice());
-//            existingHouse.setRent(updatedHouse.getRent());
-//            existingHouse.setDescription(updatedHouse.getDescription());
-//
-//            House upDatedHouse = houseRepository.save(existingHouse);
-//            BeanUtils.copyProperties(upDatedHouse,response);
-//
-//            return response;
-//        }
-//
-//        return null;
-//    }
-//
-//    public void deleteHouse(Long id) {
-//        houseRepository.deleteById(id);
-//    }
+    public HouseResponse updateHouse(String id, HouseRequest updatedHouse) {
+
+        House existingHouse = houseRepository.findById(id).orElse(null);
+        HouseResponse response = new HouseResponse();
+
+        if (existingHouse != null) {
+            existingHouse.setNeighbourhood(updatedHouse.getNeighbourhood());
+            existingHouse.setStreet(updatedHouse.getStreet());
+            existingHouse.setRooms(updatedHouse.getRooms());
+            existingHouse.setBedrooms(updatedHouse.getBedrooms());
+            existingHouse.setBathrooms(updatedHouse.getBathrooms());
+            existingHouse.setShortAddress(updatedHouse.getShortAddress());
+            existingHouse.setPrice(updatedHouse.getPrice());
+            existingHouse.setRent(updatedHouse.getRent());
+            existingHouse.setDescription(updatedHouse.getDescription());
+
+            House upDatedHouse = houseRepository.save(existingHouse);
+            BeanUtils.copyProperties(upDatedHouse,response);
+
+            return response;
+        }
+
+        return null;
+    }
+
+    public void deleteHouse(String id) {
+        houseRepository.deleteById(id);
+    }
 }
