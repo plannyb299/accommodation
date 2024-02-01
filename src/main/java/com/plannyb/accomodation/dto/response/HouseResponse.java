@@ -18,8 +18,8 @@ public class HouseResponse {
     private List<ImageRes> images;
     private LocationRes location;
     private List<CategoryRes> categories;
-    private BigDecimal price;
-    private BigDecimal rent;
+    private Double price;
+    private Double rent;
     private String description;
     private String neighbourhood;
 }

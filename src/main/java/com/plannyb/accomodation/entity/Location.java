@@ -22,6 +22,12 @@ public class Location extends AbstractEntity{
     @Column(nullable = false)
     private String city;
 
+    @Column(name = "latitude")
+    private String latitude;
+
+    @Column(name = "longitude")
+    private String longitude;
+
     @OneToOne(mappedBy = "location")
     private House house;
 

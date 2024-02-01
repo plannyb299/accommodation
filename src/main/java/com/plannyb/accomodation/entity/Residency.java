@@ -1,5 +1,6 @@
 package com.plannyb.accomodation.entity;
 
+import com.plannyb.accomodation.user.model.hostmodel.Facilities;
 import jakarta.persistence.*;
 import lombok.Data;
 

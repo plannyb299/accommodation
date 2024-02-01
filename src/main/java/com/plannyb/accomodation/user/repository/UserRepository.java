@@ -1,6 +1,6 @@
-package com.plannyb.accomodation.repository;
+package com.plannyb.accomodation.user.repository;
 
-import com.project.homerent.model.usermodel.User;
+import com.plannyb.accomodation.user.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

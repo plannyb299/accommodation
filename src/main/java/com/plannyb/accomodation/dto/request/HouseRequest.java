@@ -18,8 +18,8 @@ public class HouseRequest {
     private List<ImageReq> images;
     private LocationReq location;
     private CategoryReq category;
-    private BigDecimal price;
-    private BigDecimal rent;
+    private Double price;
+    private Double rent;
     private String description;
     private String neighbourhood;
 

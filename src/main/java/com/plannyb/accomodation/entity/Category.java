@@ -1,11 +1,11 @@
 package com.plannyb.accomodation.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.OneToOne;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import jakarta.transaction.Transactional;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
+
+import java.util.List;
 
 @Entity
 @Data
@@ -14,9 +14,9 @@ import lombok.RequiredArgsConstructor;
 @Transactional
 public class Category extends AbstractEntity {
 
-
+    @Column(name = "category_name")
     private String categoryName;
 
-    @OneToOne(mappedBy = "category")
-    private House house;
+    @OneToMany(mappedBy = "category")
+    private List<House> houses;
 }

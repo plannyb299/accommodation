@@ -1,6 +1,8 @@
 package com.plannyb.accomodation.entity;
 
 
+import com.plannyb.accomodation.user.model.hostmodel.Facilities;
+import com.plannyb.accomodation.user.model.hostmodel.Reservation;
 import jakarta.persistence.*;
 import jakarta.transaction.Transactional;
 import lombok.Data;
@@ -17,6 +19,9 @@ public class House extends AbstractEntity{
 
     @Version
     private Long version;
+
+    @Column(name = "owner")
+    private String owner;
 
     @Column(name = "street")
     private String street;
@@ -37,10 +42,10 @@ public class House extends AbstractEntity{
     private String previewImage;
 
     @Column(name = "price")
-    private BigDecimal price;
+    private Double price;
 
     @Column(name = "rent")
-    private BigDecimal rent;
+    private Double rent;
 
     @Column(name = "description")
     private String description;
@@ -58,6 +63,13 @@ public class House extends AbstractEntity{
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "id", referencedColumnName = "id")
+    private Facilities facilities;
+
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "id", referencedColumnName = "id")
     private Category category;
+
+    @OneToMany(mappedBy = "bookedHome", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+    private List<Reservation> reservations;
 
 }
