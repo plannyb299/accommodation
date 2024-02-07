@@ -7,21 +7,21 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class AllHomesList {
-    private List<House> homes;
+    private List<HouseResponse> homes;
 
     public AllHomesList(){
-        homes = new ArrayList<House>();
+        homes = new ArrayList<HouseResponse>();
     }
 
-    public void add(House home){
+    public void add(HouseResponse home){
         homes.add(home);
     }
 
-    public List<House> getHomes() {
+    public List<HouseResponse> getHomes() {
         return homes;
     }
 
-    public void setHomes(List<House> homes) {
+    public void setHomes(List<HouseResponse> homes) {
         this.homes = homes;
     }
 }

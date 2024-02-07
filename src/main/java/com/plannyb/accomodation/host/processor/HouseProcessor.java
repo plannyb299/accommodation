@@ -1,4 +1,4 @@
-package com.plannyb.accomodation.user.processor;
+package com.plannyb.accomodation.host.processor;
 
 import com.plannyb.accomodation.dto.request.HouseRequest;
 import com.plannyb.accomodation.dto.response.HouseResponse;

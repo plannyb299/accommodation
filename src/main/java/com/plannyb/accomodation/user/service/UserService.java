@@ -13,16 +13,16 @@ import java.util.List;
 
 public interface UserService {
     User findByUsername(String username);
-    User findById(Long id);
-    UserDto findDtoById(Long id);
+    User findById(String id);
+    UserDto findDtoById(String id);
 
     List<UserDto> findAll();
     UserDto save(UserDto userPostDto);
     UserDto save(UserPostDto userPostDto);
 
-    void approve(Long id);
+    void approve(String id);
 
-    void deleteById(Long id);
+    void deleteById(String id);
 
     List<UserDto> findUnapprovedUsers();
 }

@@ -27,12 +27,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User findById(Long id) {
+    public User findById(String id) {
         return userRepository.findById(id).get();
     }
 
     @Override
-    public UserDto findDtoById(Long id){
+    public UserDto findDtoById(String id){
         return UserProcessor.convertToDto(userRepository.findById(id).get());
     }
 
@@ -54,7 +54,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void deleteById(Long id) {
+    public void deleteById(String id) {
         userRepository.deleteById(id);
     }
 
@@ -87,7 +87,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void approve(Long id) {
+    public void approve(String id) {
         User searchedUser = findById(id);
         searchedUser.setApproved(1);
         userRepository.save(searchedUser);

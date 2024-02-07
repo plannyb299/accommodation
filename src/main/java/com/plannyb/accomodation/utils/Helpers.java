@@ -3,9 +3,8 @@ package com.plannyb.accomodation.utils;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
-//import com.project.homerent.model.dto.MyHomeDto;
-//import com.project.homerent.model.hostmodel.AllHomesList;
-//import com.thoughtworks.xstream.XStream;
+import com.plannyb.accomodation.dto.request.HouseRequest;
+import com.thoughtworks.xstream.XStream;
 //
 //import javax.xml.bind.JAXBContext;
 //import javax.xml.bind.JAXBException;
@@ -44,7 +43,7 @@ public class Helpers {
         }
     }
 
-//    public static String myHomeDtoToXML(MyHomeDto homeDto) {
+//    public static String myHomeDtoToXML(HouseRequest homeDto) {
 //        String xmlString = "";
 //        try {
 //            JAXBContext context = JAXBContext.newInstance(MyHomeDto.class);
@@ -75,7 +74,7 @@ public class Helpers {
 //        String xml = xstream.toXML(list);
 //        return xml;
 //    }
-
+//
 //    public static String myHomesToXML(List<MyHomeDto> usersHomeList) {
 //        List<String> convertedList;
 //

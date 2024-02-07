@@ -1,27 +1,17 @@
-package com.plannyb.accomodation.entity;
+package com.plannyb.accomodation.user.model;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
 import org.antlr.v4.runtime.misc.NotNull;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-import java.io.Serial;
 import java.io.Serializable;
-import java.time.LocalDateTime;
 import java.util.UUID;
 
 
-@Setter
-@Getter
 @MappedSuperclass
 @EntityListeners(AuditingEntityListener.class)
 public class AbstractEntity implements Serializable {
 
-    @Serial
-    @Getter
     private static final long serialVersionUID = 1L;
     @Id
     @NotNull
@@ -43,7 +33,19 @@ public class AbstractEntity implements Serializable {
 
     // GETTER AND SETTERS
 
-    //    public LocalDateTime getCreatedAt() {
+    public static long getSerialVersionUID() {
+        return serialVersionUID;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+//    public LocalDateTime getCreatedAt() {
 //        return createdAt;
 //    }
 //

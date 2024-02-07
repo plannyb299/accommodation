@@ -12,7 +12,13 @@ import java.util.List;
 @RequiredArgsConstructor
 @Table(name = "category")
 @Transactional
-public class Category extends AbstractEntity {
+public class Category extends AbstractEntity{
+
+//    @Id
+//    @GeneratedValue(strategy = GenerationType.IDENTITY)
+//    @Column(name = "category_id", nullable = false, updatable = false)
+//    private String id;
+
 
     @Column(name = "category_name")
     private String categoryName;

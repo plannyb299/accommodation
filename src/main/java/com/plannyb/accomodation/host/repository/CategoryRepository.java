@@ -1,4 +1,4 @@
-package com.plannyb.accomodation.repository;
+package com.plannyb.accomodation.host.repository;
 
 import com.plannyb.accomodation.entity.Category;
 import org.springframework.data.jpa.repository.JpaRepository;

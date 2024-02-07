@@ -11,6 +11,12 @@ import lombok.Data;
 @Transactional
 public class Image extends AbstractEntity{
 
+//    @Id
+//    @GeneratedValue(strategy = GenerationType.IDENTITY)
+//    @Column(name = "image_id", nullable = false, updatable = false)
+//    private String id;
+
+
     @Column(name = "imageUrl")
     private String imageUrl;
 

@@ -1,6 +1,7 @@
 package com.plannyb.accomodation.entity;
 
 
+import com.plannyb.accomodation.user.model.User;
 import com.plannyb.accomodation.user.model.hostmodel.Facilities;
 import com.plannyb.accomodation.user.model.hostmodel.Reservation;
 import jakarta.persistence.*;
@@ -20,11 +21,15 @@ public class House extends AbstractEntity{
     @Version
     private Long version;
 
-    @Column(name = "owner")
-    private String owner;
+    @ManyToOne (fetch = FetchType.LAZY)
+    @JoinColumn(name ="owner_id", nullable = false)
+    private User owner;
 
     @Column(name = "street")
     private String street;
+
+    @Column(name = "address")
+    private String address;
 
     @Column(name = "rooms")
     private Integer rooms;
@@ -58,18 +63,18 @@ public class House extends AbstractEntity{
 
 
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "id", referencedColumnName = "id")
+    @JoinColumn(name = "house_id", referencedColumnName = "id",insertable=false, updatable=false)
     private Location location;
 
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "id", referencedColumnName = "id")
+    @JoinColumn(name = "house_id", referencedColumnName = "id",insertable=false, updatable=false)
     private Facilities facilities;
 
     @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "id", referencedColumnName = "id")
+    @JoinColumn(name = "house_id", referencedColumnName = "id",insertable=false, updatable=false)
     private Category category;
 
-    @OneToMany(mappedBy = "bookedHome", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
-    private List<Reservation> reservations;
+//    @OneToMany(mappedBy = "bookedHome", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+//    private List<Reservation> reservations;
 
 }

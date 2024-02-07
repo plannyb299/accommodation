@@ -8,7 +8,6 @@ import java.util.List;
 @Data
 public class HouseResponse {
 
-    private Long id;
     private String street;
     private Integer rooms;
     private Integer bedrooms;
@@ -17,9 +16,10 @@ public class HouseResponse {
     private String previewImage;
     private List<ImageRes> images;
     private LocationRes location;
-    private List<CategoryRes> categories;
+    private CategoryRes category;
     private Double price;
     private Double rent;
     private String description;
     private String neighbourhood;
+    private FacilitiesRes facilities;
 }

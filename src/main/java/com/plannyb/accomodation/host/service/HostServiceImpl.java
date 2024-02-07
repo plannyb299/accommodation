@@ -1,13 +1,11 @@
-package com.plannyb.accomodation.user.service;
+package com.plannyb.accomodation.host.service;
 
 import com.plannyb.accomodation.dto.request.HouseRequest;
 import com.plannyb.accomodation.dto.response.HouseResponse;
 import com.plannyb.accomodation.entity.House;
+import com.plannyb.accomodation.host.repository.HouseRepository;
 import com.plannyb.accomodation.user.model.hostmodel.AllHomesList;
-import com.plannyb.accomodation.user.model.hostmodel.Reservation;
-import com.plannyb.accomodation.user.model.hostmodel.Reviews;
-import com.plannyb.accomodation.user.processor.HouseProcessor;
-import com.plannyb.accomodation.user.repository.HostRepository;
+import com.plannyb.accomodation.host.processor.HouseProcessor;
 import com.plannyb.accomodation.utils.Helpers;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -18,39 +16,40 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class HostServiceImpl implements HostService {
-
-    private final HostRepository hostRepository;
+    
     private final HouseProcessor houseProcessor;
+    private final HouseRepository houseRepository;
 
     @Override
-    public HouseResponse findHomeDtoById(Long id) throws Exception {
+    public House findHomeDtoById(String id) throws Exception {
         House house;
         try {
-            house = hostRepository.findById(id).get();
+            house = houseRepository.findById(id).get();
         } catch (NoSuchElementException nsee) {
             throw new Exception("Report not found", nsee.getCause());
         }
-        return HouseProcessor.convertToDto(house);
+        return house;
     }
 
     @Override
-    public House findHomeById(Long id) {
+    public House findHomeById(String id) {
         House House;
-        House = hostRepository.findById(id).get();
+        House = houseRepository.findById(id).get();
         return House;
     }
 
     @Override
-    public List<HouseResponse> findByUserId(Long id) {
-        return hostRepository.findByOwnerId(id)
+    public List<HouseResponse> findByUserId(String id) {
+        List<HouseResponse> response= houseRepository.findByOwnerId(id)
                 .stream()
                 .map(HouseProcessor::convertToDto)
                 .collect(Collectors.toList());
+        return response;
     }
     @Override
     public House findByAddress(String address)  {
             House House;
-            House = hostRepository.findByAddress(address).get();
+            House = houseRepository.findByAddress(address).get();
         return House;
     }
 
@@ -58,7 +57,7 @@ public class HostServiceImpl implements HostService {
     public HouseResponse save(HouseRequest request) {
         House house = HouseProcessor.convert(request);
 
-        House home = hostRepository.save(house);
+        House home = houseRepository.save(house);
 
         return HouseProcessor.convertToDto(home);
     }
@@ -67,22 +66,22 @@ public class HostServiceImpl implements HostService {
     public HouseResponse saveUpdate(HouseRequest housePostDto) {
         House house = HouseProcessor.convert(housePostDto);
 
-        Optional<House> tempHome = hostRepository.findByAddress(housePostDto.getLocation().getAddress());
+        Optional<House> tempHome = houseRepository.findByAddress(housePostDto.getLocation().getAddress());
         house.setId(tempHome.get().getId());
 
-        House house1= hostRepository.save(house);
+        House house1= houseRepository.save(house);
 
         return houseProcessor.convertToDto(house1);
     }
 
     @Override
-    public void deleteById(Long id) {
-        hostRepository.deleteById(id);
+    public void deleteById(String id) {
+        houseRepository.deleteById(id);
     }
 
     @Override
     public List<HouseResponse> findAll() {
-        return hostRepository.findAll()
+        return houseRepository.findAll()
                 .stream()
                 .map(HouseProcessor::convertToDto)
                 .collect(Collectors.toList());
@@ -92,25 +91,18 @@ public class HostServiceImpl implements HostService {
     public AllHomesList findAllUsingFilters(int people, double latitude, double longitude, Date bookDate, Date leaveDate) {
         AllHomesList allHomesList = new AllHomesList();
 
-        List<HouseResponse> tempListWithAllHomes = hostRepository.findAll()
+        List<HouseResponse> tempListWithAllHomes = houseRepository.findAll()
                 .stream()
                 .map(HouseProcessor::convertToDto)
                 .collect(Collectors.toList());
 
-        //filter homes by max people
-        List<House> filteredHomeListWithMaxPeople = filterHomeListByMaxPeople(people, tempListWithAllHomes);
 
         //filter homes by distance by range search
-        List<House> filteredHomeListByDistance = filterHomeListByDistance(filteredHomeListWithMaxPeople, latitude, longitude);
+        List<HouseResponse> filteredHomeListByDistance = filterHomeListByDistance(tempListWithAllHomes, latitude, longitude);
 
-        //filter homes by openBooking and closeBooking days
-        List<House> filteredHomeListByDates = filterHomeListByDates(bookDate, leaveDate, filteredHomeListByDistance);
-
-        //filter homes the checking the other reservations
-        List<House> filteredHomeListByReservationDates = filterHomeListByReservationDates(bookDate, leaveDate, filteredHomeListByDates);
 
         //sort by price
-        List<House> sortedHomesByPrice = sortHomesByPrice(filteredHomeListByReservationDates);
+        List<HouseResponse> sortedHomesByPrice = sortHomesByPrice(filteredHomeListByDistance);
 
         allHomesList.setHomes(sortedHomesByPrice);
         return allHomesList;
@@ -138,9 +130,6 @@ public class HostServiceImpl implements HostService {
         if(elevator!=null){
             allHomesList.setHomes(filterHomeListByElevator(allHomesList.getHomes(),elevator));
         }
-        if(heating!=null){
-            allHomesList.setHomes(filterHomeListByHeating(allHomesList.getHomes(),heating));
-        }
         if(kitchen!=null){
             allHomesList.setHomes(filterHomeListByKitchen(allHomesList.getHomes(),kitchen));
         }
@@ -159,31 +148,31 @@ public class HostServiceImpl implements HostService {
         return allHomesList;
     }
 
-    private List<House> filterHomeListByHomeType(List<House> tempListWithAllHomes, String homeTypeName) {
+    private List<HouseResponse> filterHomeListByHomeType(List<HouseResponse> tempListWithAllHomes, String homeTypeName) {
         return tempListWithAllHomes.stream()
                 .filter(t->t.getCategory().getCategoryName().equals(homeTypeName))
                 .collect(Collectors.toList());
     }
 
-    private List<House> filterHomeListByAc(List<House> tempListWithAllHomes, Boolean ac) {
+    private List<HouseResponse> filterHomeListByAc(List<HouseResponse> tempListWithAllHomes, Boolean ac) {
         return tempListWithAllHomes.stream()
                 .filter(t->t.getFacilities().isAc()==ac)
                 .collect(Collectors.toList());
     }
 
-    private List<House> filterHomeListByTv(List<House> tempListWithAllHomes, Boolean tv) {
+    private List<HouseResponse> filterHomeListByTv(List<HouseResponse> tempListWithAllHomes, Boolean tv) {
         return tempListWithAllHomes.stream()
                 .filter(t->t.getFacilities().isTv()==tv)
                 .collect(Collectors.toList());
     }
 
-    private List<House> filterHomeListByParking(List<House> tempListWithAllHomes, Boolean parking) {
+    private List<HouseResponse> filterHomeListByParking(List<HouseResponse> tempListWithAllHomes, Boolean parking) {
         return tempListWithAllHomes.stream()
                 .filter(t->t.getFacilities().isParking()==parking)
                 .collect(Collectors.toList());
     }
 
-    private List<House> filterHomeListByKitchen(List<House> tempListWithAllHomes, Boolean kitchen) {
+    private List<HouseResponse> filterHomeListByKitchen(List<HouseResponse> tempListWithAllHomes, Boolean kitchen) {
         return tempListWithAllHomes.stream()
                 .filter(t->t.getFacilities().isKitchen()==kitchen)
                 .collect(Collectors.toList());
@@ -195,35 +184,30 @@ public class HostServiceImpl implements HostService {
                 .collect(Collectors.toList());
     }
 
-    private List<House> filterHomeListByWifi(List<House> tempListWithAllHomes, Boolean wifi) {
+    private List<HouseResponse> filterHomeListByWifi(List<HouseResponse> tempListWithAllHomes, Boolean wifi) {
         return tempListWithAllHomes.stream()
                 .filter(t->t.getFacilities().isElevator() ==wifi)
                 .collect(Collectors.toList());
     }
 
-    private List<House> filterHomeListByElevator(List<House> tempListWithAllHomes, Boolean elevator) {
+    private List<HouseResponse> filterHomeListByElevator(List<HouseResponse> tempListWithAllHomes, Boolean elevator) {
         return tempListWithAllHomes.stream()
                 .filter(t->t.getFacilities().isElevator()==elevator)
                 .collect(Collectors.toList());
     }
 
-    private List<House> filterHomeListByMaxPrice(Double maxPrice, List<House> tempListWithAllHomes) {
+    private List<HouseResponse> filterHomeListByMaxPrice(Double maxPrice, List<HouseResponse> tempListWithAllHomes) {
         return tempListWithAllHomes.stream()
                 .filter(t->t.getPrice()<=maxPrice)
                 .collect(Collectors.toList());
     }
 
-    private List<House> sortHomesByPrice(List<House> tempListWithAllHomes) {
+    private List<HouseResponse> sortHomesByPrice(List<HouseResponse> tempListWithAllHomes) {
         return tempListWithAllHomes.stream()
-                .sorted(Comparator.comparingDouble(House::getPrice))
+                .sorted(Comparator.comparingDouble(HouseResponse::getPrice))
                 .collect(Collectors.toList());
     }
 
-//    private List<House> filterHomeListByMaxPeople(int people, List<House> tempListWithAllHomes) {
-//        return tempListWithAllHomes.stream()
-//                .filter(t->t.getMaxPeople()>=people)
-//                .collect(Collectors.toList());
-//    }
 
 //    private List<House> filterHomeListByReservationDates(Date imerominiaAfixis, Date imerominiaAnaxwrisis, List<House> tempListWithAllHomes) {
 //        List<House> filteredList = new ArrayList<>();
@@ -261,7 +245,7 @@ public class HostServiceImpl implements HostService {
 //                .getBookedDate()
 //                .compareTo(bookDate);
 //    }
-
+//
 //    private int checkBookingLeaveInReservations(Date bookDate, List<ReservationDto> reservationDtoList, int i) {
 //        return reservationDtoList
 //                .get(i)
@@ -269,39 +253,11 @@ public class HostServiceImpl implements HostService {
 //                .compareTo(bookDate);
 //    }
 
-//    private List<House> filterHomeListByDates(Date bookDate, Date leaveDate, List<House> tempListWithAllHomes) {
-//        List<House> filteredList = new ArrayList<>();
-//
-//        for(int i=0; i<tempListWithAllHomes.size(); i++){
-//            int isBookDateAfterOpenBooking = checkBookingArrival(bookDate, tempListWithAllHomes, i);
-//            int isLeaveDateBeforeCloseBooking = checkBookingLeave(leaveDate, tempListWithAllHomes, i);
-//
-//            if(isBookDateAfterOpenBooking<=0 && isLeaveDateBeforeCloseBooking>=0) {
-//                filteredList.add(tempListWithAllHomes.get(i));
-//            }
-//
-//        }
-//        return filteredList;
-//    }
-
-//    private int checkBookingArrival(Date bookDate, List<House> tempListWithAllHomes, int i) {
-//        return tempListWithAllHomes
-//                        .get(i)
-//                        .getOpenBooking()
-//                        .compareTo(bookDate);
-//    }
-//
-//    private int checkBookingLeave(Date bookDate, List<House> tempListWithAllHomes, int i) {
-//        return tempListWithAllHomes
-//                        .get(i)
-//                        .getCloseBooking()
-//                        .compareTo(bookDate);
-//    }
 
 
-    private List<House> filterHomeListByDistance(List<House> homeList, double givenLat, double givenLong) {
+    private List<HouseResponse> filterHomeListByDistance(List<HouseResponse> homeList, double givenLat, double givenLong) {
         double maxDistance = 30; //kilometers
-        List<House> filteredHomes = homeList.stream()
+        List<HouseResponse> filteredHomes = homeList.stream()
                 .map(home -> {
                     double distanceFromEachHome = Helpers.distance(Double.parseDouble(home.getLocation().getLatitude()),Double.parseDouble(home.getLocation().getLongitude()), givenLat, givenLong, "K");
                     System.out.println("distance Between visitor search and actual Home "+ distanceFromEachHome);
@@ -320,26 +276,26 @@ public class HostServiceImpl implements HostService {
             return filteredHomes;
     }
 
-    @Override
-    public Reviews getHomeReviews(Long id) throws Exception {
-        Reviews reviews= new Reviews();
-        reviews.setReviews(new ArrayList<>());
-
-        House House = findHomeById(id);
-
-        House.getReservations().forEach(t-> {
-            if(t.getHomeReviewStars()!=null) {
-                reviews.getReviews().add(t.getHomeReviewStars());
-            }
-        });
-
-        reviews.setTotalReviews(House.getReservations().stream().filter(r->r.getHomeReviewStars()!=null).count());
-
-        House.getReservations().stream()
-                .mapToInt(Reservation::getHomeReviewStars)
-                .average()
-                .ifPresent(reviews::setAverage);
-
-        return reviews;
-    }
+//    @Override
+//    public Reviews getHomeReviews(String id) throws Exception {
+//        Reviews reviews= new Reviews();
+//        reviews.setReviews(new ArrayList<>());
+//
+//        House House = findHomeById(id);
+//
+//        House.getReservations().forEach(t-> {
+//            if(t.getHomeReviewStars()!=null) {
+//                reviews.getReviews().add(t.getHomeReviewStars());
+//            }
+//        });
+//
+//        reviews.setTotalReviews(House.getReservations().stream().filter(r->r.getHomeReviewStars()!=null).count());
+//
+//        House.getReservations().stream()
+//                .mapToInt(Reservation::getHomeReviewStars)
+//                .average()
+//                .ifPresent(reviews::setAverage);
+//
+//        return reviews;
+//    }
 }

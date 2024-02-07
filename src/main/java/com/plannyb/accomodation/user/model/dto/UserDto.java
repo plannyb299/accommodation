@@ -12,7 +12,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 public class UserDto {
-    private long id;
+    private String id;
 
     @Nonnull
     private String username;

@@ -1,14 +1,14 @@
-package com.plannyb.accomodation.user.model.hostmodel;
+package com.project.homerent.model.hostmodel;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.plannyb.accomodation.entity.House;
-import com.plannyb.accomodation.user.model.AbstractEntity;
-import com.plannyb.accomodation.user.model.User;
+import com.project.homerent.model.usermodel.User;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
-import jakarta.persistence.*;
+import javax.persistence.*;
+import java.util.Date;
+
 import java.util.Date;
 
 @Getter
@@ -16,13 +16,16 @@ import java.util.Date;
 @NoArgsConstructor
 @Entity
 @Table(name="reservation")
-//@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-public class Reservation extends AbstractEntity {
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+public class Reservation {
+    @Id
+    @Column(name = "reservation_id", nullable = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long id;
 
-
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name ="house_id",insertable = false, updatable = false)
-    private House bookedHome;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name ="myhome_id", nullable = false)
+    private MyHome bookedHome;
 
     @Column(name = "booked_date", nullable = false)
     @Temporal(TemporalType.DATE)

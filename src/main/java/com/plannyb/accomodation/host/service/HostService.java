@@ -1,4 +1,4 @@
-package com.plannyb.accomodation.user.service;
+package com.plannyb.accomodation.host.service;
 
 
 import com.plannyb.accomodation.dto.request.HouseRequest;
@@ -12,11 +12,11 @@ import java.util.List;
 
 
 public interface HostService {
-    House findHomeDtoById(Long id) throws Exception;
+    House findHomeDtoById(String id) throws Exception;
 
-    House findHomeById(Long id);
+    House findHomeById(String id);
 
-    List<House> findAll();
+    List<HouseResponse> findAll();
 
     House findByAddress(String address);
 
@@ -38,13 +38,13 @@ public interface HostService {
                                          String type
     );
 
-    List<House> findByUserId(Long id);
+    List<HouseResponse> findByUserId(String id);
 //    HouseResponse save(HouseResponse HouseResponse);
     HouseResponse save(HouseRequest HousePostDto);
 
     HouseResponse saveUpdate(HouseRequest HousePostDto);
 
-    void deleteById(Long id);
+    void deleteById(String id);
 
-    Reviews getHomeReviews(Long id) throws Exception;
+//    Reviews getHomeReviews(String id) throws Exception;
 }

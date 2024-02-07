@@ -1,12 +1,11 @@
-package com.plannyb.accomodation.user.controller;
+package com.plannyb.accomodation.host.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.project.homerent.model.dto.MyHomeDto;
-import com.project.homerent.model.hostmodel.AllHomesList;
-import com.project.homerent.model.hostmodel.Reviews;
-import com.project.homerent.service.HostService;
-import com.project.homerent.service.ImageService;
-import com.project.homerent.service.UserService;
+
+import com.plannyb.accomodation.host.service.HostService;
+import com.plannyb.accomodation.user.model.hostmodel.AllHomesList;
+import com.plannyb.accomodation.user.model.hostmodel.Reviews;
+import com.plannyb.accomodation.user.service.UserService;
 import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -14,14 +13,14 @@ import org.springframework.lang.Nullable;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.servlet.http.HttpServletResponse;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import static com.project.homerent.util.Helpers.convertToJson;
+import static com.plannyb.accomodation.utils.Helpers.convertToJson;
+
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
@@ -33,8 +32,8 @@ public class PublicController {
     private HostService hostService;
     @Autowired
     private UserService userService;
-    @Autowired
-    private ImageService imageService;
+//    @Autowired
+//    private ImageService imageService;
 
     @GetMapping("/homes/all")
     public ResponseEntity<String> getAllHomes()  throws JsonProcessingException {
@@ -94,40 +93,40 @@ public class PublicController {
                 )));
     }
 
-    @GetMapping("/home/{id}/image")
-    public void renderImageFromDB(@PathVariable String id, HttpServletResponse response) throws Exception {
-        MyHomeDto myHomeDto = hostService.findHomeDtoById(Long.valueOf(id));
-
-        if(myHomeDto!=null) {
-            if(myHomeDto.getImage() != null) {
-                byte[] byteArray = new byte[myHomeDto.getImage().length];
-                int i = 0;
-
-                for (Byte wrappedByte : myHomeDto.getImage()) {
-                    byteArray[i++] = wrappedByte; //auto unboxing
-                }
-                response.setContentType("image/jpeg");
-                InputStream is = new ByteArrayInputStream(byteArray);
-                IOUtils.copy(is, response.getOutputStream());
-            }
-        }
-//        else {
-//            return ResponseEntity.ok().body("{\"Status\": \"Error\"}");
+//    @GetMapping("/home/{id}/image")
+//    public void renderImageFromDB(@PathVariable String id, HttpServletResponse response) throws Exception {
+//        MyHomeDto myHomeDto = hostService.findHomeDtoById(Long.valueOf(id));
+//
+//        if(myHomeDto!=null) {
+//            if(myHomeDto.getImage() != null) {
+//                byte[] byteArray = new byte[myHomeDto.getImage().length];
+//                int i = 0;
+//
+//                for (Byte wrappedByte : myHomeDto.getImage()) {
+//                    byteArray[i++] = wrappedByte; //auto unboxing
+//                }
+//                response.setContentType("image/jpeg");
+//                InputStream is = new ByteArrayInputStream(byteArray);
+//                IOUtils.copy(is, response.getOutputStream());
+//            }
 //        }
-    }
+////        else {
+////            return ResponseEntity.ok().body("{\"Status\": \"Error\"}");
+////        }
+//    }
 
-    @PostMapping("user/{id}/image")
-    public String handleImagePost(@PathVariable String id, @RequestParam("imagefile") MultipartFile file){
+//    @PostMapping("user/{id}/image")
+//    public String handleImagePost(@PathVariable String id, @RequestParam("imagefile") MultipartFile file){
+//
+//        imageService.saveImageFileToUser(Long.valueOf(id), file);
+//
+//        return "redirect:/user/" + id + "/show";
+//    }
 
-        imageService.saveImageFileToUser(Long.valueOf(id), file);
-
-        return "redirect:/user/" + id + "/show";
-    }
-
-    @GetMapping("/home/{id}/reviews")
-    public ResponseEntity<String> reviews(@PathVariable("id") Long id) throws Exception {
-        Reviews reviews = hostService.getHomeReviews(id);
-
-        return ResponseEntity.ok().body(convertToJson(reviews));
-    }
+//    @GetMapping("/home/{id}/reviews")
+//    public ResponseEntity<String> reviews(@PathVariable("id") Long id) throws Exception {
+//        Reviews reviews = hostService.getHomeReviews(id);
+//
+//        return ResponseEntity.ok().body(convertToJson(reviews));
+//    }
 }

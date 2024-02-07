@@ -7,7 +7,7 @@ import com.plannyb.accomodation.entity.Category;
 import com.plannyb.accomodation.entity.House;
 import com.plannyb.accomodation.entity.Image;
 import com.plannyb.accomodation.entity.Location;
-import com.plannyb.accomodation.repository.HouseRepository;
+import com.plannyb.accomodation.host.repository.HouseRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;

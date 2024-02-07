@@ -15,7 +15,6 @@ import lombok.RequiredArgsConstructor;
 @Transactional
 public class Location extends AbstractEntity{
 
-
     @Column(name = "address")
     private String address;
 
