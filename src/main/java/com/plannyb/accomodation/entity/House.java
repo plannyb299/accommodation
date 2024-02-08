@@ -3,12 +3,10 @@ package com.plannyb.accomodation.entity;
 
 import com.plannyb.accomodation.user.model.User;
 import com.plannyb.accomodation.user.model.hostmodel.Facilities;
-import com.plannyb.accomodation.user.model.hostmodel.Reservation;
 import jakarta.persistence.*;
 import jakarta.transaction.Transactional;
 import lombok.Data;
 
-import java.math.BigDecimal;
 import java.util.List;
 
 @Entity

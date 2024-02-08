@@ -2,17 +2,12 @@ package com.plannyb.accomodation.user.controller;
 
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.plannyb.accomodation.dto.response.HouseResponse;
-import com.plannyb.accomodation.user.model.dto.UserDto;
 import com.plannyb.accomodation.host.service.HostService;
+import com.plannyb.accomodation.user.model.dto.UserDto;
 import com.plannyb.accomodation.user.service.UserService;
-
-import com.project.homerent.util.Helpers;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.lang.Nullable;
-
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -23,7 +18,7 @@ import static com.plannyb.accomodation.utils.Helpers.convertToJson;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/admin")
-@PreAuthorize("hasRole('ADMIN')")
+
 public class AdminController {
 
     private UserService userService;
@@ -31,11 +26,8 @@ public class AdminController {
 
     private HostService hostService;
 
-    @Autowired
-    private PasswordEncoder passwordEncoder;
-
     @GetMapping("/users")
-    public ResponseEntity<List<UserDto>> findAll(){
+    public ResponseEntity<List<UserDto>> findAll() {
         return ResponseEntity.ok().body(userService.findAll());
     }
 
@@ -47,7 +39,7 @@ public class AdminController {
 
     @PutMapping("/users")
     public ResponseEntity<String> updateUser(@RequestBody @Nullable UserDto userDto) throws JsonProcessingException {
-            return ResponseEntity.ok().body(convertToJson(userService.save(userDto)));
+        return ResponseEntity.ok().body(convertToJson(userService.save(userDto)));
     }
 
     @DeleteMapping("/users/{id}")
@@ -64,7 +56,7 @@ public class AdminController {
     }
 
     @GetMapping("/users/unapproved")
-    public ResponseEntity<List<UserDto>> findUnapprovedUsers(){
+    public ResponseEntity<List<UserDto>> findUnapprovedUsers() {
         return ResponseEntity.ok().body(userService.findUnapprovedUsers());
     }
 

@@ -1,9 +1,9 @@
-package com.project.homerent.converter;
+package com.plannyb.accomodation.host.processor;
 
+import com.plannyb.accomodation.service.HouseService;
+import com.plannyb.accomodation.user.service.UserService;
 import com.project.homerent.model.dto.ReservationDto;
 import com.project.homerent.model.hostmodel.Reservation;
-import com.project.homerent.service.HostService;
-import com.project.homerent.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -12,18 +12,11 @@ import org.springframework.stereotype.Component;
 public class ReservationConverter {
 
     @Autowired
-    private HostService hostService;
-    private static HostService hostServiceStatic;
+    private HouseService hostService;
 
     @Autowired
     private UserService userService;
-    private static UserService userServiceStatic;
 
-    @Autowired
-    public void setStatic() {
-        this.hostServiceStatic = hostService;
-        this.userServiceStatic = userService;
-    }
 
     public static ReservationDto convertToDto(Reservation reservation) {
         ReservationDto reservationDto = new ReservationDto();
