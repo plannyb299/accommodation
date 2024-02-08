@@ -1,9 +1,10 @@
-package com.project.homerent.service;
+package com.plannyb.accomodation.host.service;
 
-import com.project.homerent.converter.HomeCategoryConverter;
-import com.project.homerent.model.dto.HomeCategoryDto;
-import com.project.homerent.model.hostmodel.HomeCategory;
-import com.project.homerent.repository.HomeCategoryRepository;
+import com.plannyb.accomodation.dto.response.CategoryRes;
+import com.plannyb.accomodation.entity.Category;
+import com.plannyb.accomodation.host.processor.HomeCategoryConverter;
+import com.plannyb.accomodation.host.repository.CategoryRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -11,39 +12,41 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
 public class HomeCategoryServiceImpl implements HomeCategoryService {
-    @Autowired
-    HomeCategoryRepository homeCategoryRepository;
+
+
+     private final CategoryRepository homeCategoryRepository;
 
     @Override
-    public HomeCategoryDto findHomeCategoryDtoById(Long id) {
-        HomeCategory homeCategory;
+    public CategoryRes findHomeCategoryDtoById(Long id) {
+        Category homeCategory;
         homeCategory = homeCategoryRepository.findById(id).get();
         return HomeCategoryConverter.convertToDto(homeCategory);
     }
     @Override
-    public HomeCategoryDto findHomeCategoryDtoByHomeCategoryTitle(String title) {
-        HomeCategory homeCategory;
+    public CategoryRes findHomeCategoryDtoByHomeCategoryTitle(String title) {
+        Category homeCategory;
         homeCategory = homeCategoryRepository.findByHomeCategoryTitle(title).get();
         return HomeCategoryConverter.convertToDto(homeCategory);
     }
 
     @Override
-    public HomeCategory findHomeCategoryById(Long id) {
-        HomeCategory homeCategory;
+    public Category findHomeCategoryById(Long id) {
+        Category homeCategory;
         homeCategory = homeCategoryRepository.findById(id).get();
         return homeCategory;
     }
 
     @Override
-    public HomeCategory findHomeCategoryByHomeCategoryTitle(String title) {
-        HomeCategory homeCategory;
+    public Category findHomeCategoryByHomeCategoryTitle(String title) {
+        Category homeCategory;
         homeCategory = homeCategoryRepository.findByHomeCategoryTitle(title).get();
         return homeCategory;
     }
 
     @Override
-    public List<HomeCategoryDto> findAll() {
+    public List<CategoryRes> findAll() {
         return homeCategoryRepository.findAll()
                 .stream()
                 .map(HomeCategoryConverter::convertToDto)

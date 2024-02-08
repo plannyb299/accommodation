@@ -3,18 +3,13 @@ package com.plannyb.accomodation.host.controller;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
 import com.plannyb.accomodation.host.service.HostService;
-import com.plannyb.accomodation.user.model.hostmodel.AllHomesList;
-import com.plannyb.accomodation.user.model.hostmodel.Reviews;
+import com.plannyb.accomodation.host.model.AllHomesList;
 import com.plannyb.accomodation.user.service.UserService;
-import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.lang.Nullable;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.io.ByteArrayInputStream;
-import java.io.InputStream;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;

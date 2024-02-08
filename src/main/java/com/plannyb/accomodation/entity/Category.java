@@ -20,8 +20,8 @@ public class Category extends AbstractEntity{
 //    private String id;
 
 
-    @Column(name = "category_name")
-    private String categoryName;
+    @Column(name = "home_category_title")
+    private String homeCategoryTitle;
 
     @OneToMany(mappedBy = "category")
     private List<House> houses;

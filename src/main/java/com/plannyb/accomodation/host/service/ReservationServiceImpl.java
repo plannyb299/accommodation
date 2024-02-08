@@ -4,16 +4,15 @@ import com.project.homerent.converter.HomeCategoryConverter;
 import com.project.homerent.converter.MyHomeConverter;
 import com.project.homerent.converter.ReservationConverter;
 import com.project.homerent.model.dto.HomeCategoryDto;
-import com.project.homerent.model.dto.ReservationDto;
+import com.plannyb.accomodation.dto.request.ReservationDto;
 import com.project.homerent.model.hostmodel.HomeCategory;
 import com.project.homerent.model.hostmodel.MyHome;
-import com.project.homerent.model.hostmodel.Reservation;
+import com.plannyb.accomodation.host.model.Reservation;
 import com.project.homerent.repository.ReservationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service

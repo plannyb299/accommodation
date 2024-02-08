@@ -1,4 +1,4 @@
-package com.plannyb.accomodation.user.model.hostmodel;
+package com.plannyb.accomodation.host.model;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;

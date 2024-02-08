@@ -4,7 +4,7 @@ import com.plannyb.accomodation.dto.request.HouseRequest;
 import com.plannyb.accomodation.dto.response.HouseResponse;
 import com.plannyb.accomodation.entity.House;
 import com.plannyb.accomodation.host.repository.HouseRepository;
-import com.plannyb.accomodation.user.model.hostmodel.AllHomesList;
+import com.plannyb.accomodation.host.model.AllHomesList;
 import com.plannyb.accomodation.host.processor.HouseProcessor;
 import com.plannyb.accomodation.utils.Helpers;
 import lombok.RequiredArgsConstructor;

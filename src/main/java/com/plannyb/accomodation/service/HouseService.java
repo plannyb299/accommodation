@@ -7,14 +7,17 @@ import com.plannyb.accomodation.entity.Category;
 import com.plannyb.accomodation.entity.House;
 import com.plannyb.accomodation.entity.Image;
 import com.plannyb.accomodation.entity.Location;
+import com.plannyb.accomodation.host.model.AllHomesList;
+import com.plannyb.accomodation.host.processor.HouseProcessor;
 import com.plannyb.accomodation.host.repository.HouseRepository;
+import com.plannyb.accomodation.utils.Helpers;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -26,6 +29,211 @@ public class HouseService {
 //    private final LocationRepository locationRepository;
 //    private final CategoryRepository categoryRepository;
 
+    private final HouseProcessor houseProcessor;
+
+
+    public House findHomeDtoById(String id) throws Exception {
+        House house;
+        try {
+            house = houseRepository.findById(id).get();
+        } catch (NoSuchElementException nsee) {
+            throw new Exception("Report not found", nsee.getCause());
+        }
+        return house;
+    }
+
+
+    public House findHomeById(String id) {
+        House House;
+        House = houseRepository.findById(id).get();
+        return House;
+    }
+
+
+    public List<HouseResponse> findByUserId(String id) {
+        List<HouseResponse> response= houseRepository.findByOwnerId(id)
+                .stream()
+                .map(HouseProcessor::convertToDto)
+                .collect(Collectors.toList());
+        return response;
+    }
+    public House findByAddress(String address)  {
+        House House;
+        House = houseRepository.findByAddress(address).get();
+        return House;
+    }
+
+
+    public HouseResponse save(HouseRequest request) {
+        House house = HouseProcessor.convert(request);
+
+        House home = houseRepository.save(house);
+
+        return HouseProcessor.convertToDto(home);
+    }
+
+    public HouseResponse saveUpdate(HouseRequest housePostDto) {
+        House house = HouseProcessor.convert(housePostDto);
+
+        Optional<House> tempHome = houseRepository.findByAddress(housePostDto.getLocation().getAddress());
+        house.setId(tempHome.get().getId());
+
+        House house1= houseRepository.save(house);
+
+        return houseProcessor.convertToDto(house1);
+    }
+
+
+    public void deleteById(String id) {
+        houseRepository.deleteById(id);
+    }
+
+    public List<HouseResponse> findAll() {
+        return houseRepository.findAll()
+                .stream()
+                .map(HouseProcessor::convertToDto)
+                .collect(Collectors.toList());
+    }
+
+    public AllHomesList findAllUsingFilters(int people, double latitude, double longitude, Date bookDate, Date leaveDate) {
+        AllHomesList allHomesList = new AllHomesList();
+
+        List<HouseResponse> tempListWithAllHomes = houseRepository.findAll()
+                .stream()
+                .map(HouseProcessor::convertToDto)
+                .collect(Collectors.toList());
+
+
+        //filter homes by distance by range search
+        List<HouseResponse> filteredHomeListByDistance = filterHomeListByDistance(tempListWithAllHomes, latitude, longitude);
+
+
+        //sort by price
+        List<HouseResponse> sortedHomesByPrice = sortHomesByPrice(filteredHomeListByDistance);
+
+        allHomesList.setHomes(sortedHomesByPrice);
+        return allHomesList;
+    }
+
+    public AllHomesList findAllUsingMoreFilters(AllHomesList allHomesList,
+                                                String maxPrice,
+                                                Boolean wifi,
+                                                Boolean elevator,
+                                                Boolean heating,
+                                                Boolean kitchen,
+                                                Boolean parking,
+                                                Boolean tv,
+                                                Boolean ac,
+                                                String type
+    ){
+        //filter homes by max price
+        if(maxPrice!=null){
+            allHomesList.setHomes(filterHomeListByMaxPrice(Double.parseDouble(maxPrice), allHomesList.getHomes()));
+        }
+        if(wifi!=null){
+            allHomesList.setHomes(filterHomeListByWifi(allHomesList.getHomes(),wifi));
+        }
+        if(elevator!=null){
+            allHomesList.setHomes(filterHomeListByElevator(allHomesList.getHomes(),elevator));
+        }
+        if(kitchen!=null){
+            allHomesList.setHomes(filterHomeListByKitchen(allHomesList.getHomes(),kitchen));
+        }
+        if(parking!=null){
+            allHomesList.setHomes(filterHomeListByParking(allHomesList.getHomes(),parking));
+        }
+        if(tv!=null){
+            allHomesList.setHomes(filterHomeListByTv(allHomesList.getHomes(),tv));
+        }
+        if(ac!=null){
+            allHomesList.setHomes(filterHomeListByAc(allHomesList.getHomes(),ac));
+        }
+        if(type!=null){
+            allHomesList.setHomes(filterHomeListByHomeType(allHomesList.getHomes(),type));
+        }
+        return allHomesList;
+    }
+
+    private List<HouseResponse> filterHomeListByHomeType(List<HouseResponse> tempListWithAllHomes, String homeTypeName) {
+        return tempListWithAllHomes.stream()
+                .filter(t->t.getCategory().getCategoryName().equals(homeTypeName))
+                .collect(Collectors.toList());
+    }
+
+    private List<HouseResponse> filterHomeListByAc(List<HouseResponse> tempListWithAllHomes, Boolean ac) {
+        return tempListWithAllHomes.stream()
+                .filter(t->t.getFacilities().isAc()==ac)
+                .collect(Collectors.toList());
+    }
+
+    private List<HouseResponse> filterHomeListByTv(List<HouseResponse> tempListWithAllHomes, Boolean tv) {
+        return tempListWithAllHomes.stream()
+                .filter(t->t.getFacilities().isTv()==tv)
+                .collect(Collectors.toList());
+    }
+
+    private List<HouseResponse> filterHomeListByParking(List<HouseResponse> tempListWithAllHomes, Boolean parking) {
+        return tempListWithAllHomes.stream()
+                .filter(t->t.getFacilities().isParking()==parking)
+                .collect(Collectors.toList());
+    }
+
+    private List<HouseResponse> filterHomeListByKitchen(List<HouseResponse> tempListWithAllHomes, Boolean kitchen) {
+        return tempListWithAllHomes.stream()
+                .filter(t->t.getFacilities().isKitchen()==kitchen)
+                .collect(Collectors.toList());
+    }
+
+    private List<House> filterHomeListByHeating(List<House> tempListWithAllHomes, Boolean heating) {
+        return tempListWithAllHomes.stream()
+                .filter(t->t.getFacilities().isHeating()==heating)
+                .collect(Collectors.toList());
+    }
+
+    private List<HouseResponse> filterHomeListByWifi(List<HouseResponse> tempListWithAllHomes, Boolean wifi) {
+        return tempListWithAllHomes.stream()
+                .filter(t->t.getFacilities().isElevator() ==wifi)
+                .collect(Collectors.toList());
+    }
+
+    private List<HouseResponse> filterHomeListByElevator(List<HouseResponse> tempListWithAllHomes, Boolean elevator) {
+        return tempListWithAllHomes.stream()
+                .filter(t->t.getFacilities().isElevator()==elevator)
+                .collect(Collectors.toList());
+    }
+
+    private List<HouseResponse> filterHomeListByMaxPrice(Double maxPrice, List<HouseResponse> tempListWithAllHomes) {
+        return tempListWithAllHomes.stream()
+                .filter(t->t.getPrice()<=maxPrice)
+                .collect(Collectors.toList());
+    }
+
+    private List<HouseResponse> sortHomesByPrice(List<HouseResponse> tempListWithAllHomes) {
+        return tempListWithAllHomes.stream()
+                .sorted(Comparator.comparingDouble(HouseResponse::getPrice))
+                .collect(Collectors.toList());
+    }
+
+    private List<HouseResponse> filterHomeListByDistance(List<HouseResponse> homeList, double givenLat, double givenLong) {
+        double maxDistance = 30; //kilometers
+        List<HouseResponse> filteredHomes = homeList.stream()
+                .map(home -> {
+                    double distanceFromEachHome = Helpers.distance(Double.parseDouble(home.getLocation().getLatitude()),Double.parseDouble(home.getLocation().getLongitude()), givenLat, givenLong, "K");
+                    System.out.println("distance Between visitor search and actual Home "+ distanceFromEachHome);
+                    if(distanceFromEachHome < maxDistance)
+                        return home;
+                    else
+                        return null;
+                })
+                .collect(Collectors.toList());
+
+        while (filteredHomes.remove(null));
+
+        if(filteredHomes.isEmpty() || filteredHomes==null)
+            return Collections.emptyList();
+        else
+            return filteredHomes;
+    }
 
     public List<HouseResponse> getAllHouses() {
 
@@ -101,7 +309,7 @@ public class HouseService {
 
 //        category.setCategoryId(RandomString.generateUniqueId());
 //        category.setHouse(house);
-        category.setCategoryName(request.getCategory().getCategoryName());
+        category.setHomeCategoryTitle(request.getCategory().getHomeCategoryTitle());
 ////        categoryRepository.save(category);
 //
 //
@@ -152,4 +360,5 @@ public class HouseService {
     public void deleteHouse(String id) {
         houseRepository.deleteById(id);
     }
+
 }

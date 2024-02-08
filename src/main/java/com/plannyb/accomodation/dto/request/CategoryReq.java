@@ -6,6 +6,7 @@ import lombok.Data;
 public class CategoryReq {
 
 
-    private String categoryName;
+    private String homeCategoryTitle;
+
     private HouseRequest house;
 }

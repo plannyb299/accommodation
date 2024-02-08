@@ -3,9 +3,9 @@ package com.project.homerent.service;
 
 import com.project.homerent.model.dto.HomeCategoryDto;
 import com.project.homerent.model.dto.MyHomeDto;
-import com.project.homerent.model.dto.ReservationDto;
+import com.plannyb.accomodation.dto.request.ReservationDto;
 import com.project.homerent.model.hostmodel.HomeCategory;
-import com.project.homerent.model.hostmodel.Reservation;
+import com.plannyb.accomodation.host.model.Reservation;
 
 import java.util.List;
 

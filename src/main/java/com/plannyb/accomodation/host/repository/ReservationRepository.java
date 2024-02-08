@@ -1,7 +1,7 @@
 package com.project.homerent.repository;
 
 import com.project.homerent.model.hostmodel.HomeCategory;
-import com.project.homerent.model.hostmodel.Reservation;
+import com.plannyb.accomodation.host.model.Reservation;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

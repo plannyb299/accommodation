@@ -4,8 +4,7 @@ package com.plannyb.accomodation.host.service;
 import com.plannyb.accomodation.dto.request.HouseRequest;
 import com.plannyb.accomodation.dto.response.HouseResponse;
 import com.plannyb.accomodation.entity.House;
-import com.plannyb.accomodation.user.model.hostmodel.AllHomesList;
-import com.plannyb.accomodation.user.model.hostmodel.Reviews;
+import com.plannyb.accomodation.host.model.AllHomesList;
 
 import java.util.Date;
 import java.util.List;

@@ -1,25 +1,35 @@
 package com.plannyb.accomodation.host.processor;
 
+import com.plannyb.accomodation.dto.request.ReservationReq;
 import com.plannyb.accomodation.service.HouseService;
 import com.plannyb.accomodation.user.service.UserService;
-import com.project.homerent.model.dto.ReservationDto;
-import com.project.homerent.model.hostmodel.Reservation;
+import com.plannyb.accomodation.host.model.Reservation;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 
 @Component
+@RequiredArgsConstructor
 public class ReservationConverter {
 
-    @Autowired
-    private HouseService hostService;
+    private final HouseService hostService;
+
+    private final UserService userService;
+
+    private static HouseService hostServiceStatic;
+
+    private static UserService userServiceStatic;
 
     @Autowired
-    private UserService userService;
+    public void setStatic() {
+        this.hostServiceStatic = hostService;
+        this.userServiceStatic = userService;
+    }
 
 
-    public static ReservationDto convertToDto(Reservation reservation) {
-        ReservationDto reservationDto = new ReservationDto();
+    public static ReservationReq convertToDto(Reservation reservation) {
+        ReservationReq reservationDto = new ReservationReq();
         reservationDto.setReservationId(reservation.getId());
         reservationDto.setBookedDate(reservation.getBookedDate());
         reservationDto.setLeaveDate(reservation.getLeaveDate());
@@ -39,7 +49,7 @@ public class ReservationConverter {
         return reservationDto;
     }
 
-    public static Reservation convert(ReservationDto reservationDto) {
+    public static Reservation convert(ReservationReq reservationDto) {
         Reservation reservation = new Reservation();
         reservation.setId(reservationDto.getReservationId());
         reservation.setBookedDate(reservationDto.getBookedDate());

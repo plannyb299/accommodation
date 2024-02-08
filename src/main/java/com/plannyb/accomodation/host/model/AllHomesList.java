@@ -1,4 +1,4 @@
-package com.plannyb.accomodation.user.model.hostmodel;
+package com.plannyb.accomodation.host.model;
 
 import com.plannyb.accomodation.dto.response.HouseResponse;
 import com.plannyb.accomodation.entity.House;

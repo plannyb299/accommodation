@@ -8,5 +8,6 @@ public class CategoryRes {
 
 
     private String categoryName;
+    private String homeCategoryTitle;
     private HouseRequest house;
 }
