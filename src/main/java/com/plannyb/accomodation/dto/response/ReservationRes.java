@@ -1,35 +1,32 @@
-package com.project.homerent.model.dto;
+package com.plannyb.accomodation.dto.response;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.project.homerent.model.hostmodel.MyHome;
-import com.project.homerent.model.usermodel.User;
+
+import jakarta.persistence.Temporal;
 import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
+
+import java.time.LocalDate;
 import java.util.Date;
 
 @Data
-public class ReservationDto {
+public class ReservationRes {
 
-    private long reservationId;
+    private String reservationId;
 
-    private long bookedHomeId;
+    private String bookedHomeId;
 
-    @JsonFormat(pattern="yyyy-MM-dd")
-    @Temporal(TemporalType.DATE)
-    private Date bookedDate;
+    private LocalDate bookedDate;
 
-    @JsonFormat(pattern="yyyy-MM-dd")
-    @Temporal(TemporalType.DATE)
-    private Date leaveDate;
+    private LocalDate leaveDate;
 
     int isBooked;
 
-    private long userIdBooked;
+    private String userIdBooked;
     private String userNameBooked;
 
     int hostReviewStars;

@@ -1,12 +1,11 @@
-package com.project.homerent.service;
+package com.plannyb.accomodation.images;
 
-import com.project.homerent.model.dto.MyHomeDto;
-import com.project.homerent.model.hostmodel.MyHome;
-import com.project.homerent.model.usermodel.User;
-import com.project.homerent.repository.HostRepository;
-import com.project.homerent.repository.UserRepository;
+import com.plannyb.accomodation.entity.House;
+import com.plannyb.accomodation.host.repository.HouseRepository;
+import com.plannyb.accomodation.user.model.User;
+import com.plannyb.accomodation.user.repository.UserRepository;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -14,21 +13,21 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 @Slf4j
 @Service
+@RequiredArgsConstructor
 public class ImageServiceImpl implements ImageService {
 
-    @Autowired
-    HostRepository hostRepository;
+    private final HouseRepository hostRepository;
 
-    @Autowired
-    UserRepository userRepository;
+
+    private final UserRepository userRepository;
 
     @Override
     @Transactional
-    public void saveImageFileToHome(Long homeId, MultipartFile file) {
+    public void saveImageFileToHome(String homeId, MultipartFile file) {
         try {
-            MyHome myHome = hostRepository.findById(homeId).get();
+            House myHome = hostRepository.findById(homeId).get();
 
-            Byte[] byteObjects = new Byte[file.getBytes().length];
+            byte[] byteObjects = new byte[file.getBytes().length];
 
             int i = 0;
 
@@ -45,7 +44,7 @@ public class ImageServiceImpl implements ImageService {
     }
     @Override
     @Transactional
-    public void saveImageFileToUser(Long userId, MultipartFile file) {
+    public void saveImageFileToUser(String userId, MultipartFile file) {
         try {
             User user = userRepository.findById(userId).get();
 

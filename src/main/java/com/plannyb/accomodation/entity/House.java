@@ -42,7 +42,7 @@ public class House extends AbstractEntity{
     private String shortAddress;
 
     @Column(name = "preview_image")
-    private String previewImage;
+    private byte[] image;
 
     @Column(name = "price")
     private Double price;

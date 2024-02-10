@@ -1,6 +1,5 @@
-package com.project.homerent.repository;
+package com.plannyb.accomodation.host.repository;
 
-import com.project.homerent.model.hostmodel.HomeCategory;
 import com.plannyb.accomodation.host.model.Reservation;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
@@ -9,7 +8,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface ReservationRepository extends JpaRepository<Reservation, Long> {
+public interface ReservationRepository extends JpaRepository<Reservation, String> {
     List<Reservation> findAll();
-    Optional<Reservation> findById(Long id);
+    Optional<Reservation> findById(String id);
 }

@@ -286,7 +286,7 @@ public class HouseService {
         house.setStreet(request.getStreet());
         house.setNeighbourhood(request.getNeighbourhood());
         house.setShortAddress(request.getShortAddress());
-        house.setPreviewImage(request.getPreviewImage());
+        house.setImage(request.getImage());
         house.setBedrooms(request.getBedrooms());
 //        log.info("House: {}", house.toString());
 

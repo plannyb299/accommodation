@@ -13,7 +13,7 @@ public class HouseResponse {
     private Integer bedrooms;
     private Integer bathrooms;
     private String shortAddress;
-    private String previewImage;
+    private byte[] image;
     private List<ImageRes> images;
     private LocationRes location;
     private CategoryRes category;

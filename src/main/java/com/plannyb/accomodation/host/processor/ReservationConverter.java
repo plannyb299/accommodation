@@ -1,6 +1,7 @@
 package com.plannyb.accomodation.host.processor;
 
 import com.plannyb.accomodation.dto.request.ReservationReq;
+import com.plannyb.accomodation.dto.response.ReservationRes;
 import com.plannyb.accomodation.service.HouseService;
 import com.plannyb.accomodation.user.service.UserService;
 import com.plannyb.accomodation.host.model.Reservation;
@@ -28,8 +29,8 @@ public class ReservationConverter {
     }
 
 
-    public static ReservationReq convertToDto(Reservation reservation) {
-        ReservationReq reservationDto = new ReservationReq();
+    public static ReservationRes convertToDto(Reservation reservation) {
+        ReservationRes reservationDto = new ReservationRes();
         reservationDto.setReservationId(reservation.getId());
         reservationDto.setBookedDate(reservation.getBookedDate());
         reservationDto.setLeaveDate(reservation.getLeaveDate());
