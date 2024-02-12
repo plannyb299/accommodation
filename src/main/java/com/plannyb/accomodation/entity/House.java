@@ -1,6 +1,7 @@
 package com.plannyb.accomodation.entity;
 
 
+import com.plannyb.accomodation.host.model.Reservation;
 import com.plannyb.accomodation.user.model.User;
 import com.plannyb.accomodation.host.model.Facilities;
 import jakarta.persistence.*;
@@ -72,7 +73,7 @@ public class House extends AbstractEntity{
     @JoinColumn(name = "house_id", referencedColumnName = "id",insertable=false, updatable=false)
     private Category category;
 
-//    @OneToMany(mappedBy = "bookedHome", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
-//    private List<Reservation> reservations;
+    @OneToMany(mappedBy = "bookedHome", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+    private List<Reservation> reservations;
 
 }

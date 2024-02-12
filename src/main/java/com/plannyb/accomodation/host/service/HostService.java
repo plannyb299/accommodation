@@ -5,6 +5,7 @@ import com.plannyb.accomodation.dto.request.HouseRequest;
 import com.plannyb.accomodation.dto.response.HouseResponse;
 import com.plannyb.accomodation.entity.House;
 import com.plannyb.accomodation.host.model.AllHomesList;
+import com.plannyb.accomodation.host.model.Reviews;
 
 import java.util.Date;
 import java.util.List;
@@ -45,5 +46,5 @@ public interface HostService {
 
     void deleteById(String id);
 
-//    Reviews getHomeReviews(String id) throws Exception;
+    Reviews getHomeReviews(String id) throws Exception;
 }

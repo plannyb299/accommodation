@@ -2,14 +2,23 @@ package com.plannyb.accomodation.host.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 
+import com.plannyb.accomodation.dto.response.HouseResponse;
+import com.plannyb.accomodation.entity.House;
+import com.plannyb.accomodation.host.model.Reviews;
 import com.plannyb.accomodation.host.service.HostService;
 import com.plannyb.accomodation.host.model.AllHomesList;
+import com.plannyb.accomodation.images.ImageService;
 import com.plannyb.accomodation.user.service.UserService;
+import jakarta.servlet.http.HttpServletResponse;
+import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.lang.Nullable;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -27,8 +36,8 @@ public class PublicController {
     private HostService hostService;
     @Autowired
     private UserService userService;
-//    @Autowired
-//    private ImageService imageService;
+    @Autowired
+    private ImageService imageService;
 
     @GetMapping("/homes/all")
     public ResponseEntity<String> getAllHomes()  throws JsonProcessingException {
@@ -88,40 +97,40 @@ public class PublicController {
                 )));
     }
 
-//    @GetMapping("/home/{id}/image")
-//    public void renderImageFromDB(@PathVariable String id, HttpServletResponse response) throws Exception {
-//        MyHomeDto myHomeDto = hostService.findHomeDtoById(Long.valueOf(id));
-//
-//        if(myHomeDto!=null) {
-//            if(myHomeDto.getImage() != null) {
-//                byte[] byteArray = new byte[myHomeDto.getImage().length];
-//                int i = 0;
-//
-//                for (Byte wrappedByte : myHomeDto.getImage()) {
-//                    byteArray[i++] = wrappedByte; //auto unboxing
-//                }
-//                response.setContentType("image/jpeg");
-//                InputStream is = new ByteArrayInputStream(byteArray);
-//                IOUtils.copy(is, response.getOutputStream());
-//            }
+    @GetMapping("/home/{id}/image")
+    public void renderImageFromDB(@PathVariable String id, HttpServletResponse response) throws Exception {
+        House myHomeDto = hostService.findHomeDtoById(id);
+
+        if(myHomeDto!=null) {
+            if(myHomeDto.getImage() != null) {
+                byte[] byteArray = new byte[myHomeDto.getImage().length];
+                int i = 0;
+
+                for (Byte wrappedByte : myHomeDto.getImage()) {
+                    byteArray[i++] = wrappedByte; //auto unboxing
+                }
+                response.setContentType("image/jpeg");
+                InputStream is = new ByteArrayInputStream(byteArray);
+                IOUtils.copy(is, response.getOutputStream());
+            }
+        }
+//        else {
+//            return ResponseEntity.ok().body("{\"Status\": \"Error\"}");
 //        }
-////        else {
-////            return ResponseEntity.ok().body("{\"Status\": \"Error\"}");
-////        }
-//    }
+    }
 
-//    @PostMapping("user/{id}/image")
-//    public String handleImagePost(@PathVariable String id, @RequestParam("imagefile") MultipartFile file){
-//
-//        imageService.saveImageFileToUser(Long.valueOf(id), file);
-//
-//        return "redirect:/user/" + id + "/show";
-//    }
+    @PostMapping("user/{id}/image")
+    public String handleImagePost(@PathVariable String id, @RequestParam("imagefile") MultipartFile file){
 
-//    @GetMapping("/home/{id}/reviews")
-//    public ResponseEntity<String> reviews(@PathVariable("id") Long id) throws Exception {
-//        Reviews reviews = hostService.getHomeReviews(id);
-//
-//        return ResponseEntity.ok().body(convertToJson(reviews));
-//    }
+        imageService.saveImageFileToUser(id, file);
+
+        return "redirect:/user/" + id + "/show";
+    }
+
+    @GetMapping("/home/{id}/reviews")
+    public ResponseEntity<String> reviews(@PathVariable("id") String id) throws Exception {
+        Reviews reviews = hostService.getHomeReviews(id);
+
+        return ResponseEntity.ok().body(convertToJson(reviews));
+    }
 }
