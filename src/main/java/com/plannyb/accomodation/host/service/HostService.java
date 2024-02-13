@@ -14,7 +14,7 @@ import java.util.List;
 public interface HostService {
     House findHomeDtoById(String id) throws Exception;
 
-    House findHomeById(String id);
+    HouseResponse findHomeById(String id);
 
     List<HouseResponse> findAll();
 

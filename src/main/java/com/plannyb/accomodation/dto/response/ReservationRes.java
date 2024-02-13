@@ -29,11 +29,11 @@ public class ReservationRes {
     private String userIdBooked;
     private String userNameBooked;
 
-    int hostReviewStars;
+    private Integer hostReviewStars;
 
-    String hostReviewDescription;
+    private String hostReviewDescription;
 
-    int homeReviewStars;
+    private Integer homeReviewStars;
 
-    String homeReviewDescription;
+    private String homeReviewDescription;
 }

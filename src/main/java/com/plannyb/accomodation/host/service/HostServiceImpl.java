@@ -2,6 +2,7 @@ package com.plannyb.accomodation.host.service;
 
 import com.plannyb.accomodation.dto.request.HouseRequest;
 import com.plannyb.accomodation.dto.response.HouseResponse;
+import com.plannyb.accomodation.dto.response.ReservationRes;
 import com.plannyb.accomodation.entity.House;
 import com.plannyb.accomodation.host.model.AllHomesList;
 import com.plannyb.accomodation.host.model.Reservation;
@@ -10,6 +11,7 @@ import com.plannyb.accomodation.host.processor.HouseProcessor;
 import com.plannyb.accomodation.host.repository.HouseRepository;
 import com.plannyb.accomodation.utils.Helpers;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -35,10 +37,11 @@ public class HostServiceImpl implements HostService {
     }
 
     @Override
-    public House findHomeById(String id) {
-        House House;
-        House = houseRepository.findById(id).get();
-        return House;
+    public HouseResponse findHomeById(String id) {
+       HouseResponse houseResponse = new HouseResponse();
+        House house = houseRepository.findById(id).get();
+        BeanUtils.copyProperties(house, houseResponse);
+        return houseResponse;
     }
 
     @Override
@@ -284,18 +287,18 @@ public class HostServiceImpl implements HostService {
         Reviews reviews = new Reviews();
         reviews.setReviews(new ArrayList<>());
 
-        House House = findHomeById(id);
+        HouseResponse house = findHomeById(id);
 
-        House.getReservations().forEach(t -> {
+        house.getReservations().forEach(t -> {
             if (t.getHomeReviewStars() != null) {
                 reviews.getReviews().add(t.getHomeReviewStars());
             }
         });
 
-        reviews.setTotalReviews(House.getReservations().stream().filter(r -> r.getHomeReviewStars() != null).count());
+        reviews.setTotalReviews(house.getReservations().stream().filter(r -> r.getHomeReviewStars() != null).count());
 
-        House.getReservations().stream()
-                .mapToInt(Reservation::getHomeReviewStars)
+        house.getReservations().stream()
+                .mapToInt(ReservationRes::getHomeReviewStars)
                 .average()
                 .ifPresent(reviews::setAverage);
 

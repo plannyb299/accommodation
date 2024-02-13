@@ -22,4 +22,5 @@ public class HouseResponse {
     private String description;
     private String neighbourhood;
     private FacilitiesRes facilities;
+    private List<ReservationRes> reservations;
 }

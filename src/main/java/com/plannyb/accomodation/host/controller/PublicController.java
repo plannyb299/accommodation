@@ -12,6 +12,7 @@ import com.plannyb.accomodation.user.service.UserService;
 import jakarta.servlet.http.HttpServletResponse;
 import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.lang.Nullable;
 import org.springframework.web.bind.annotation.*;
@@ -42,6 +43,14 @@ public class PublicController {
     @GetMapping("/homes/all")
     public ResponseEntity<String> getAllHomes()  throws JsonProcessingException {
         return ResponseEntity.ok().body(convertToJson(hostService.findAll()));
+    }
+
+    @GetMapping("/homes/byId/{id}")
+    public ResponseEntity<HouseResponse> getHomeById(@PathVariable String id)  throws JsonProcessingException {
+        HouseResponse house = hostService.findHomeById(id);
+        return house != null
+                ? new ResponseEntity<>(house, HttpStatus.OK)
+                : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
     @GetMapping("/homes")
