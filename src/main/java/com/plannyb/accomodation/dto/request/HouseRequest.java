@@ -14,7 +14,7 @@ public class HouseRequest {
     private Integer bedrooms;
     private Integer bathrooms;
     private String shortAddress;
-    private byte[] image;
+    private String image;
     private List<ImageReq> images;
     private LocationReq location;
     private CategoryReq category;

@@ -19,7 +19,6 @@ import java.security.Principal;
 import static com.plannyb.accomodation.utils.Helpers.convertToJson;
 
 
-@CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 @RequestMapping("/api/host")
 //@PreAuthorize("hasRole('MODERATOR') or hasRole('ADMIN')")
@@ -62,13 +61,13 @@ public class HostModController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("{\"Status\": \"Error\"}");
     }
 
-    @PostMapping("home/{id}/image")
-    public String handleImagePost(@PathVariable String id, @RequestParam("imagefile") MultipartFile file){
-
-        imageService.saveImageFileToHome(id, file);
-
-        return "redirect:/home/" + id + "/show";
-    }
+//    @PostMapping("home/{id}/image")
+//    public String handleImagePost(@PathVariable String id, @RequestParam("imagefile") MultipartFile file){
+//
+//        imageService.saveImageFileToHome(id, file);
+//
+//        return "redirect:/home/" + id + "/show";
+//    }
 
     @DeleteMapping("/home/{id}/delete")
     public ResponseEntity<String> simpleUpdate(@PathVariable("id") String id, Principal principal) throws JsonProcessingException {

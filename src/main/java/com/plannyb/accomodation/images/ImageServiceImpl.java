@@ -21,27 +21,27 @@ public class ImageServiceImpl implements ImageService {
 
     private final UserRepository userRepository;
 
-    @Override
-    @Transactional
-    public void saveImageFileToHome(String homeId, MultipartFile file) {
-        try {
-            House myHome = hostRepository.findById(homeId).get();
-
-            byte[] byteObjects = new byte[file.getBytes().length];
-
-            int i = 0;
-
-            for (byte b : file.getBytes()){
-                byteObjects[i++] = b;
-            }
-
-            myHome.setImage(byteObjects);
-
-            hostRepository.save(myHome);
-        } catch (IOException e) {
-            log.error("Error occurred in save image to home", e);
-        }
-    }
+//    @Override
+//    @Transactional
+//    public void saveImageFileToHome(String homeId, MultipartFile file) {
+//        try {
+//            House myHome = hostRepository.findById(homeId).get();
+//
+//            byte[] byteObjects = new byte[file.getBytes().length];
+//
+//            int i = 0;
+//
+//            for (byte b : file.getBytes()){
+//                byteObjects[i++] = b;
+//            }
+//
+//            myHome.setImage(byteObjects);
+//
+//            hostRepository.save(myHome);
+//        } catch (IOException e) {
+//            log.error("Error occurred in save image to home", e);
+//        }
+//    }
     @Override
     @Transactional
     public void saveImageFileToUser(String userId, MultipartFile file) {

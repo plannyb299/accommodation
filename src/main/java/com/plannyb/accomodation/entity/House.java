@@ -21,7 +21,7 @@ public class House extends AbstractEntity{
     private Long version;
 
     @ManyToOne (fetch = FetchType.LAZY)
-    @JoinColumn(name ="owner_id", nullable = false)
+    @JoinColumn(name ="user_id", nullable = false)
     private User owner;
 
     @Column(name = "street")
@@ -43,7 +43,7 @@ public class House extends AbstractEntity{
     private String shortAddress;
 
     @Column(name = "preview_image")
-    private byte[] image;
+    private String image;
 
     @Column(name = "price")
     private Double price;
