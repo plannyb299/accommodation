@@ -11,5 +11,5 @@ public interface HouseRepository extends JpaRepository<House, String> {
 
     Optional<House> findByAddress(String address);
 
-    List<House> findByOwnerId(String homeId);
+    List<House> findByOwnerUserId(String homeId);
 }

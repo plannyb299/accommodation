@@ -6,5 +6,4 @@ import lombok.Data;
 public class ImageReq {
 
     private String imageUrl;
-    private HouseRequest house;
 }

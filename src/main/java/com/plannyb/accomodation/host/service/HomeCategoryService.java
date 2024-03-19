@@ -13,4 +13,5 @@ public interface HomeCategoryService {
     Category findHomeCategoryByHomeCategoryTitle(String title);
     Category findHomeCategoryById(Long id);
     List<CategoryRes> findAll();
+    Category saveCategory(Category category);
 }

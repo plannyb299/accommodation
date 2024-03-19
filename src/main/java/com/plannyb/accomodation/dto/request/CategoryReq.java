@@ -7,6 +7,4 @@ public class CategoryReq {
 
 
     private String homeCategoryTitle;
-
-    private HouseRequest house;
 }

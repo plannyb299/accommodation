@@ -5,16 +5,18 @@ import com.plannyb.accomodation.entity.Residency;
 import com.plannyb.accomodation.user.model.AbstractEntity;
 import jakarta.persistence.*;
 import lombok.Data;
+import org.hibernate.annotations.GenericGenerator;
 
 @Entity
 @Table(name = "facilities")
 @Data
-public class Facilities extends AbstractEntity {
+public class Facilities {
 
-//    @Id
-//    @GeneratedValue(strategy = GenerationType.IDENTITY)
-//    @Column(name = "facilities_id", nullable = false, updatable = false)
-//    private String id;
+    @Id
+    @GeneratedValue(generator = "uuid")
+    @GenericGenerator(name = "uuid", strategy = "com.plannyb.accomodation.config.StringIdGenerator")
+    @Column(name = "facilities_id", nullable = false, updatable = false)
+    private String facilitiesId;
 
     private String bathrooms;
     private String bedrooms;
@@ -27,6 +29,6 @@ public class Facilities extends AbstractEntity {
     private boolean wifi;
     private boolean elevator;
     @OneToOne
-    @JoinColumn(name = "house_id", insertable=false, updatable=false)
+    @JoinColumn(name = "id", insertable=false, updatable=false)
     private House house;
 }

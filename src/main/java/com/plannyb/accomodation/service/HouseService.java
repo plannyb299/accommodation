@@ -51,7 +51,7 @@ public class HouseService {
 
 
     public List<HouseResponse> findByUserId(String id) {
-        List<HouseResponse> response= houseRepository.findByOwnerId(id)
+        List<HouseResponse> response= houseRepository.findByOwnerUserId(id)
                 .stream()
                 .map(HouseProcessor::convertToDto)
                 .collect(Collectors.toList());
@@ -291,19 +291,19 @@ public class HouseService {
 //        log.info("House: {}", house.toString());
 
 
-        for(ImageReq image: request.getImages()){
-            Image image1= new Image();
-//            BeanUtils.copyProperties(image, image1);
-//            image1.setImageId(RandomString.generateUniqueId());
-//            image1.setHouseId(house.getHouseId());
-
-            image1.setImageUrl(image.getImageUrl());
-//            image1.setHouse(house);
-            images.add(image1);
+//        for(ImageReq image: request.getImages()){
+//            Image image1= new Image();
+////            BeanUtils.copyProperties(image, image1);
+////            image1.setImageId(RandomString.generateUniqueId());
+////            image1.setHouseId(house.getHouseId());
 //
-        }
+//            image1.setImageUrl(image.getImageUrl());
+////            image1.setHouse(house);
+//            images.add(image1);
+////
+//        }
 //
-        house.setImages(images);
+//        house.setImages(images);
 
         Category category = new Category();
 

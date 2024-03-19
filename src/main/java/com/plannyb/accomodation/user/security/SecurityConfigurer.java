@@ -16,11 +16,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
-@EnableWebSecurity
-@EnableGlobalMethodSecurity(
-        // securedEnabled = true,
-        // jsr250Enabled = true,
-        prePostEnabled = true)
 @RequiredArgsConstructor
 public class SecurityConfigurer {
 
@@ -30,41 +25,41 @@ public class SecurityConfigurer {
     }
 
 
-    @Autowired
-    public void configureGlobal(AuthenticationManagerBuilder auth)
-            throws Exception {
-        auth.inMemoryAuthentication().withUser("user")
-                .password(passwordEncoder().encode("password")).roles("USER")
-                .and()
-                .withUser("admin").password(passwordEncoder().encode("password")).roles("USER", "ADMIN");
-    }
-
-    @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        return http.csrf(AbstractHttpConfigurer::disable)
-                .cors(AbstractHttpConfigurer::disable)
-                .authorizeHttpRequests(request -> {
-                    request.requestMatchers("/api/auth/**").permitAll();
-                    request.requestMatchers("/api/public/**")
-                            .hasAnyAuthority("USER", "ADMIN");
-                }).formLogin(form -> form
-                        .loginPage("/signin")
-                        .loginProcessingUrl("/signin")
-                        .failureUrl("/api/auth/signup")
-                        .usernameParameter("USERNAME")
-                        .passwordParameter("PASSWORD")
-                        .defaultSuccessUrl("DEFAULT_SUCCESS_URL"))
-                .logout(logout -> logout
-                        .logoutUrl("/logout")
-                        .invalidateHttpSession(true)
-                        .deleteCookies("JSESSIONID")
-                        .logoutSuccessUrl("LOGIN_URL" + "?logout"))
-                .sessionManagement(session -> session
-                        .sessionCreationPolicy(SessionCreationPolicy.ALWAYS)
-                        .invalidSessionUrl("/invalidSession.htm")
-                        .maximumSessions(1)
-                        .maxSessionsPreventsLogin(true))
-                .build();
-
-    }
+//    @Autowired
+//    public void configureGlobal(AuthenticationManagerBuilder auth)
+//            throws Exception {
+//        auth.inMemoryAuthentication().withUser("user")
+//                .password(passwordEncoder().encode("password")).roles("USER")
+//                .and()
+//                .withUser("admin").password(passwordEncoder().encode("password")).roles("USER", "ADMIN");
+//    }
+//
+//    @Bean
+//    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+//        return http.csrf(AbstractHttpConfigurer::disable)
+//                .cors(AbstractHttpConfigurer::disable)
+//                .authorizeHttpRequests(request -> {
+//                    request.requestMatchers("/api/auth/**").permitAll();
+//                    request.requestMatchers("/api/public/**")
+//                            .hasAnyAuthority("USER", "ADMIN");
+//                }).formLogin(form -> form
+//                        .loginPage("/signin")
+//                        .loginProcessingUrl("/signin")
+//                        .failureUrl("/api/auth/signup")
+//                        .usernameParameter("USERNAME")
+//                        .passwordParameter("PASSWORD")
+//                        .defaultSuccessUrl("DEFAULT_SUCCESS_URL"))
+//                .logout(logout -> logout
+//                        .logoutUrl("/logout")
+//                        .invalidateHttpSession(true)
+//                        .deleteCookies("JSESSIONID")
+//                        .logoutSuccessUrl("LOGIN_URL" + "?logout"))
+//                .sessionManagement(session -> session
+//                        .sessionCreationPolicy(SessionCreationPolicy.ALWAYS)
+//                        .invalidSessionUrl("/invalidSession.htm")
+//                        .maximumSessions(1)
+//                        .maxSessionsPreventsLogin(true))
+//                .build();
+//
+//    }
 }

@@ -9,6 +9,7 @@ import lombok.Setter;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import jakarta.persistence.*;
+import org.hibernate.annotations.GenericGenerator;
 
 import java.time.LocalDate;
 
@@ -18,10 +19,17 @@ import java.time.LocalDate;
 @Entity
 @Table(name="reservation")
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-public class Reservation extends AbstractEntity {
+public class Reservation  {
+
+
+    @Id
+    @GeneratedValue(generator = "uuid")
+    @GenericGenerator(name = "uuid", strategy = "com.plannyb.accomodation.config.StringIdGenerator")
+    @Column(name = "reservation_id", nullable = false, updatable = false)
+    private String reservationId;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name ="myhome_id", nullable = false)
+    @JoinColumn(name ="id", nullable = false)
     private House bookedHome;
 
     @Column(name = "booked_date", nullable = false)

@@ -34,8 +34,8 @@ import org.springframework.web.multipart.MultipartFile;
 @RequestMapping("/api/auth")
 @RequiredArgsConstructor
 public class AuthController {
-    @Autowired
-    AuthenticationManager authenticationManager;
+//    @Autowired
+//    AuthenticationManager authenticationManager;
 
     private final UserRepository userRepository;
 
@@ -45,33 +45,33 @@ public class AuthController {
 
     private final JwtUtils jwtUtils;
 
-    @PostMapping("/signin")
-    public ResponseEntity<?> authenticateUser(@Validated @RequestBody LoginRequest loginRequest) {
-
-        Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
-
-        SecurityContextHolder.getContext().setAuthentication(authentication);
-        String jwt = jwtUtils.generateJwtToken(authentication);
-
-        UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
-        List<String> roles = userDetails.getAuthorities().stream()
-                .map(item -> item.getAuthority())
-                .collect(Collectors.toList());
-
-        JwtResponse response = new JwtResponse();
-        response.setId(userDetails.getId());
-        response.setUsername(userDetails.getUsername());
-        response.setEmail(userDetails.getEmail());
-        response.setFirstName(userDetails.getFirstName());
-        response.setLastName(userDetails.getLastName());
-        response.setTelephone(userDetails.getTelephone());
-        response.setRoles(roles);
-        response.setApproved(Integer.toString(userDetails.getApproved()));
-
-
-        return ResponseEntity.ok(response);
-    }
+//    @PostMapping("/signin")
+//    public ResponseEntity<?> authenticateUser(@Validated @RequestBody LoginRequest loginRequest) {
+//
+//        Authentication authentication = authenticationManager.authenticate(
+//                new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
+//
+//        SecurityContextHolder.getContext().setAuthentication(authentication);
+//        String jwt = jwtUtils.generateJwtToken(authentication);
+//
+//        UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
+//        List<String> roles = userDetails.getAuthorities().stream()
+//                .map(item -> item.getAuthority())
+//                .collect(Collectors.toList());
+//
+//        JwtResponse response = new JwtResponse();
+//        response.setId(userDetails.getId());
+//        response.setUsername(userDetails.getUsername());
+//        response.setEmail(userDetails.getEmail());
+//        response.setFirstName(userDetails.getFirstName());
+//        response.setLastName(userDetails.getLastName());
+//        response.setTelephone(userDetails.getTelephone());
+//        response.setRoles(roles);
+//        response.setApproved(Integer.toString(userDetails.getApproved()));
+//
+//
+//        return ResponseEntity.ok(response);
+//    }
 
     @PostMapping("/signup")
     public ResponseEntity<?> registerUser(@RequestBody SignupRequest signUpRequest) {

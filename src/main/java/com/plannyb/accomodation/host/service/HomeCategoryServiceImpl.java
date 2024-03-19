@@ -40,9 +40,13 @@ public class HomeCategoryServiceImpl implements HomeCategoryService {
 
     @Override
     public Category findHomeCategoryByHomeCategoryTitle(String title) {
-        Category homeCategory;
-        homeCategory = homeCategoryRepository.findByHomeCategoryTitle(title).get();
-        return homeCategory;
+        Optional<Category> homeCategory;
+        homeCategory = homeCategoryRepository.findByHomeCategoryTitle(title);
+        if(homeCategory.isPresent()) {
+            return homeCategory.get();
+        }else {
+            return null;
+        }
     }
 
     @Override
@@ -51,6 +55,11 @@ public class HomeCategoryServiceImpl implements HomeCategoryService {
                 .stream()
                 .map(HomeCategoryConverter::convertToDto)
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public Category saveCategory(Category category) {
+        return homeCategoryRepository.save(category);
     }
 
 }

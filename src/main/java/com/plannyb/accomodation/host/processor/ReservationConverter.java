@@ -31,11 +31,11 @@ public class ReservationConverter {
 
     public static ReservationRes convertToDto(Reservation reservation) {
         ReservationRes reservationDto = new ReservationRes();
-        reservationDto.setReservationId(reservation.getId());
+        reservationDto.setReservationId(reservation.getReservationId());
         reservationDto.setBookedDate(reservation.getBookedDate());
         reservationDto.setLeaveDate(reservation.getLeaveDate());
         reservationDto.setBookedHomeId(reservation.getBookedHome().getId());
-        reservationDto.setUserIdBooked(reservation.getUserBooked().getId());
+        reservationDto.setUserIdBooked(reservation.getUserBooked().getUserId());
         reservationDto.setUserNameBooked(reservation.getUserBooked().getUsername());
 
         reservationDto.setHomeReviewDescription(reservation.getHomeReviewDescription());
@@ -52,7 +52,7 @@ public class ReservationConverter {
 
     public static Reservation convert(ReservationReq reservationDto) {
         Reservation reservation = new Reservation();
-        reservation.setId(reservationDto.getReservationId());
+        reservation.setReservationId(reservationDto.getReservationId());
         reservation.setBookedDate(reservationDto.getBookedDate());
         reservation.setLeaveDate(reservationDto.getLeaveDate());
         reservation.setBookedHome(hostServiceStatic.findHomeById(reservationDto.getBookedHomeId()));

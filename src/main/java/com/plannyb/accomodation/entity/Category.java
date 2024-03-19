@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import jakarta.transaction.Transactional;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
+import org.hibernate.annotations.GenericGenerator;
 
 import java.util.List;
 
@@ -11,13 +12,13 @@ import java.util.List;
 @Data
 @RequiredArgsConstructor
 @Table(name = "category")
-@Transactional
-public class Category extends AbstractEntity{
+public class Category{
 
-//    @Id
-//    @GeneratedValue(strategy = GenerationType.IDENTITY)
-//    @Column(name = "category_id", nullable = false, updatable = false)
-//    private String id;
+    @Id
+    @GeneratedValue(generator = "uuid")
+    @GenericGenerator(name = "uuid", strategy = "com.plannyb.accomodation.config.StringIdGenerator")
+    @Column(name = "category_id", nullable = false, updatable = false)
+    private String categoryId;
 
 
     @Column(name = "home_category_title")

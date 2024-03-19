@@ -10,6 +10,5 @@ public class LocationReq {
 
     private String city;
 
-    private HouseRequest house;
 
 }

@@ -16,5 +16,4 @@ public class FacilitiesReq {
     private boolean electricity;
     private boolean wifi;
     private boolean elevator;
-    private House house;
 }

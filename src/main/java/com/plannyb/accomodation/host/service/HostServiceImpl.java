@@ -1,8 +1,10 @@
 package com.plannyb.accomodation.host.service;
 
 import com.plannyb.accomodation.dto.request.HouseRequest;
+import com.plannyb.accomodation.dto.response.CategoryRes;
 import com.plannyb.accomodation.dto.response.HouseResponse;
 import com.plannyb.accomodation.dto.response.ReservationRes;
+import com.plannyb.accomodation.entity.Category;
 import com.plannyb.accomodation.entity.House;
 import com.plannyb.accomodation.host.model.AllHomesList;
 import com.plannyb.accomodation.host.model.Reservation;
@@ -10,7 +12,9 @@ import com.plannyb.accomodation.host.model.Reviews;
 import com.plannyb.accomodation.host.processor.HouseProcessor;
 import com.plannyb.accomodation.host.repository.HouseRepository;
 import com.plannyb.accomodation.utils.Helpers;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
@@ -20,10 +24,13 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
+@Slf4j
 public class HostServiceImpl implements HostService {
 
     private final HouseProcessor houseProcessor;
     private final HouseRepository houseRepository;
+    private final HomeCategoryService homeCategoryService;
 
     @Override
     public House findHomeDtoById(String id) throws Exception {
@@ -46,7 +53,7 @@ public class HostServiceImpl implements HostService {
 
     @Override
     public List<HouseResponse> findByUserId(String id) {
-        List<HouseResponse> response = houseRepository.findByOwnerId(id)
+        List<HouseResponse> response = houseRepository.findByOwnerUserId(id)
                 .stream()
                 .map(HouseProcessor::convertToDto)
                 .collect(Collectors.toList());
@@ -62,11 +69,21 @@ public class HostServiceImpl implements HostService {
 
     @Override
     public HouseResponse save(HouseRequest request) {
+
+
+        Category categoryRes = homeCategoryService.findHomeCategoryByHomeCategoryTitle(request.getCategory().getHomeCategoryTitle());
+        if(categoryRes ==null) {
+            Category category = new Category();
+            BeanUtils.copyProperties(request.getCategory(),category);
+           categoryRes= homeCategoryService.saveCategory(category);
+        }
         House house = HouseProcessor.convert(request);
+        house.setCategory(categoryRes);
+            log.info("House: {}", house);
+            House home = houseRepository.save(house);
 
-        House home = houseRepository.save(house);
+            return HouseProcessor.convertToDto(home);
 
-        return HouseProcessor.convertToDto(home);
     }
 
     @Override

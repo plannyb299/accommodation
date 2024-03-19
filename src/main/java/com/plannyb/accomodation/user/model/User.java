@@ -7,6 +7,7 @@ import jakarta.persistence.Table;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import org.hibernate.annotations.GenericGenerator;
 
 import java.util.HashSet;
 import java.util.List;
@@ -15,7 +16,13 @@ import java.util.Set;
 @Entity
 @Table(name = "users", uniqueConstraints = { @UniqueConstraint(columnNames = "username"), @UniqueConstraint(columnNames = "email")})
 @Data
-public class User extends AbstractEntity {
+public class User  {
+
+    @Id
+    @GeneratedValue(generator = "uuid")
+    @GenericGenerator(name = "uuid", strategy = "com.plannyb.accomodation.config.StringIdGenerator")
+    @Column(name = "user_id", nullable = false, updatable = false)
+    private String userId;
 
     @Nonnull
     private String username;
